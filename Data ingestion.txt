@@ -1,0 +1,38 @@
+
+#Verify accessibility and download capability from the provided link
+
+curl -I https://www2.census.gov/programs-surveys/popest/datasets/
+
+#Download data 
+
+wget https://www2.census.gov/programs-surveys/popest/datasets/2020-2023/national/asrh/nc-est2023-agesex-res.csv
+
+
+#Ascertain the Data Schema
+
+head -n 10 nc-est2023-agesex-res.csv
+
+#Pipe to HDFS
+#Place the downloaded file in Hadoop folder
+
+hadoop fs -mkdir project
+hadoop fs -put /home/training/Desktop/Hadoop/est_2023_agesex.csv project
+
+#Verify data moved to that directory
+
+hadoop fs -ls
+
+#Database and table creation in Hive
+
+create database dataingestion;
+use dataingestion;
+create table agesex ( sex int, age int, estibase2020 int, popesti2020 int, popesti2021 int, popesti2022 int, popesti2023 int) row format delimited
+fields terminated by ',' stored as textfile;
+
+#Load data from Hadoop to hive
+
+load data inpath '/user/training/project/est_2023_sexage.csv into table agesex;
+
+#Confirm data integrity using SELECT HiveQL command to view and validate loaded data
+
+Select * from agesex limit 5;
