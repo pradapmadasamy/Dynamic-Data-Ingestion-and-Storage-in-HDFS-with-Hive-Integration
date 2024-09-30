@@ -23,7 +23,7 @@ create table agesex ( sex int, age int, estibase2020 int, popesti2020 int, popes
 fields terminated by ',' stored as textfile;
 
 #Load data from Hadoop to hive
-load data inpath '/user/training/project/est_2023_sexage.csv into table agesex;
+load data inpath '/user/training/project/est_2023_sexage.csv' into table agesex;
 
 #Confirm data integrity using SELECT HiveQL command to view and validate loaded data
 Select * from agesex limit 5;
